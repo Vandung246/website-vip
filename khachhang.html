@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khách hàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <h1>🚀 Hệ Thống Quản Lý</h1>
+        </div>
+        <nav>
+            <a href="trangchu.html" class="nav-link">Trang chủ</a>
+            <a href="khachhang.html" class="nav-link active">Khách hàng</a>
+            <a href="dichvu.html" class="nav-link">Dịch vụ</a>
+            <a href="thongke.html" class="nav-link">Thống kê</a>
+            <a href="index.html" class="nav-link" onclick="logout(); return false;">Đăng xuất</a>
+        </nav>
+    </div>
+</header>
+
+<section class="banner">
+    <div class="banner-content">
+        <h2>Quản lý khách hàng</h2>
+        <p>Quản lý thông tin khách hàng một cách chi tiết và hiệu quả</p>
+        <div class="banner-decoration"></div>
+    </div>
+</section>
+
+<section class="customer-management">
+    <div class="container-fluid">
+        <!-- Form thêm/sửa khách hàng -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0" id="formTitle">➕ Thêm Khách Hàng Mới</h4>
+            </div>
+            <div class="card-body">
+                <form id="customerForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="ten" class="form-label">Tên khách hàng <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="ten" placeholder="Nhập tên khách hàng" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="sdt" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="sdt" placeholder="0123456789" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="example@email.com">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="diachi" class="form-label">Địa chỉ</label>
+                            <input type="text" class="form-control" id="diachi" placeholder="Nhập địa chỉ">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="ngaysinh" class="form-label">Ngày sinh</label>
+                            <input type="date" class="form-control" id="ngaysinh">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="gioitinh" class="form-label">Giới tính</label>
+                            <select class="form-select" id="gioitinh">
+                                <option value="">Chọn giới tính</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <span>💾</span> Thêm Khách Hàng
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="cancelBtn" onclick="resetForm()" style="display: none;">
+                            <span>❌</span> Hủy
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tìm kiếm và lọc -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <div class="row align-items-end">
+                    <div class="col-md-4 mb-2">
+                        <label for="searchInput" class="form-label">Tìm kiếm</label>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Tìm theo tên, SĐT, email...">
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <label for="sortBy" class="form-label">Sắp xếp theo</label>
+                        <select class="form-select" id="sortBy">
+                            <option value="ten">Tên (A-Z)</option>
+                            <option value="ten-desc">Tên (Z-A)</option>
+                            <option value="ngaytao">Ngày tạo (Mới nhất)</option>
+                            <option value="ngaytao-desc">Ngày tạo (Cũ nhất)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <label for="filterGioiTinh" class="form-label">Lọc theo giới tính</label>
+                        <select class="form-select" id="filterGioiTinh">
+                            <option value="">Tất cả</option>
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                            <option value="Khác">Khác</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <button class="btn btn-outline-secondary w-100" onclick="resetFilter()">
+                            <span>🔄</span> Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bảng danh sách -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">📋 Danh Sách Khách Hàng</h5>
+                <span class="badge bg-primary" id="customerCount">Tổng: 0</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="customerTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên khách hàng</th>
+                                <th>SĐT</th>
+                                <th>Email</th>
+                                <th>Địa chỉ</th>
+                                <th>Ngày sinh</th>
+                                <th>Giới tính</th>
+                                <th>Ngày tạo</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="danhsach">
+                            <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 - Thiết kế bởi bạn</p>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/khachhang.js"></script>
+</body>
+</html>
